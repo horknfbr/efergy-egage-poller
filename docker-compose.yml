@@ -13,3 +13,12 @@ services:
       - "INFLUXDB_ADMIN_USER=admin"
       - "INFLUXDB_ADMIN_PASSWORD=password"
       - "INFLUXDB_DB=efergy"
+  efergy-poller:
+    restart: always
+    container_name: efergy-poller
+    build: ./docker/efergy-poller
+    links:
+      - "efergy-influx:efergy-influx"
+    environment:
+      - "ENGAGE_API_URL=${ENGAGE_API_URL}"
+      - "EFERGY_API_TOKEN=${EFERGY_API_TOKEN}"
