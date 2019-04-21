@@ -7,7 +7,7 @@ ENV INFLUXDB_DB="efergy" \
 
 COPY . .
 
-RUN pip install influxdb
+RUN pip install influxdb python-daemon
 
 
 CMD [ "python", "efergy-poller.py" ]
