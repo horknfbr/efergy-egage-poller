@@ -10,4 +10,4 @@ datasources:
     database: efergy
     user: admin
     password: password
-    url: http://efergy-influx:8087
+    url: http://efergy-influx:8086
