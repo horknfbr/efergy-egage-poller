@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  efergy-influx:
+    restart: always
+    image: influxdb:1.7
+    container_name: efergy-influx
+    volumes:
+      - "./data/efergy-influx/:/var/lib/influxdb"
+    ports:
+      - "${EF_INFLUXDB_PORT}:8086"
+    environment:
+      - "INFLUXDB_ADMIN_USER=admin"
+      - "INFLUXDB_ADMIN_PASSWORD=password"
+      - "INFLUXDB_DB=efergy"
+  efergy-poller:
+    restart: always
+    container_name: efergy-poller
+    build: ./docker/efergy-poller
+    links:
+      - "efergy-influx:efergy-influx"
+    environment:
+      - "ENGAGE_API_URL=${ENGAGE_API_URL}"
+      - "EFERGY_API_TOKEN=${EFERGY_API_TOKEN}"
+  efergy-grafana:
+      restart: always
+      image: grafana/grafana:5.4.3
+      container_name: efergy-grafana
+      volumes:
+        - "./docker/grafana/provisioning:/etc/grafana/provisioning"
+        - "./data/grafana:/var/lib/grafana"
+      ports:
+        - "3000:3000"
+      links:
+        - "efergy-influx:efergy-influx"
+      environment:
+        - "GF_SERVER_ROOT_URL=http://localhost"
+        - "GF_SECURITY_ADMIN_PASSWORD=admin"
+        - "GF_AUTH_ANONYMOUS_ENABLED=true"

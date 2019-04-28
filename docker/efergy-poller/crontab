@@ -1,0 +1,1 @@
+* * * * * root /usr/local/bin/python /usr/src/app/efergy-poller.py >> /var/log/cron.log 2>&1
