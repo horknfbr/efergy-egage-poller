@@ -1,2 +1,2 @@
 #!/bin/bash
-printenv | grep API | tee /etc/environment
+printenv | grep API > /etc/environment
